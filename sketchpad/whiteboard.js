@@ -15,7 +15,7 @@ canvas.addEventListener("mousedown", (e) => {
 canvas.addEventListener("mouseup", () => drawing = false);
 canvas.addEventListener("mouseout", () => drawing = false);
 
-const socket = new WebSocket("ws://localhost:8080");
+const socket = new WebSocket("ws://192.168.1.5:8080");
 
 const colorPicker = document.getElementById("colorPicker");
 const thicknessPicker = document.getElementById("thicknessPicker");
