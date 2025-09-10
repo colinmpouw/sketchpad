@@ -48,7 +48,30 @@ canvas.addEventListener("mousemove", (e) => {
 // Improved remote drawing: track last position and thickness, handle 'start' events
 let lastRemote = {};
 socket.onmessage = (event) => {
-  const data = JSON.parse(event.data);
+  // If event.data is a Blob, convert to text first
+  if (event.data instanceof Blob) {
+    const reader = new FileReader();
+    reader.onload = function() {
+      try {
+        const data = JSON.parse(reader.result);
+        handleWSData(data);
+      } catch (e) {
+        console.error('WS JSON parse error:', e, reader.result);
+      }
+    };
+    reader.readAsText(event.data);
+  } else {
+    try {
+      const data = JSON.parse(event.data);
+      handleWSData(data);
+    } catch (e) {
+      console.error('WS JSON parse error:', e, event.data);
+    }
+  }
+};
+
+function handleWSData(data) {
+  console.log('[WS INCOMING]', data);
   if (data.type === "start") {
     ctx.strokeStyle = data.color;
     ctx.lineWidth = data.thickness || thicknessPicker.value;
@@ -77,6 +100,7 @@ socket.onmessage = (event) => {
     lastRemote = {};
     // Replay all draw actions
     data.data.forEach(draw => {
+      console.log('[WS REPLAY]', draw);
       if (draw.type === "start") {
         ctx.strokeStyle = draw.color;
         ctx.lineWidth = draw.thickness || thicknessPicker.value;
@@ -103,7 +127,7 @@ socket.onmessage = (event) => {
       }
     });
   }
-};
+}
 
 function clearBoard() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
