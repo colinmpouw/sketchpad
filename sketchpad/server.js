@@ -1,7 +1,16 @@
 // server.js
 
+const fs = require('fs');
+const https = require('https');
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
+
+// Load SSL certificate and key
+const server = https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+});
+
+const wss = new WebSocket.Server({ server });
 
 // Store users and sketchpad state
 let users = [];
@@ -61,5 +70,9 @@ wss.on('connection', function connection(ws) {
       }
     });
   });
+});
+
+server.listen(8080, () => {
+  console.log('Secure server running on port 8080');
 });
 

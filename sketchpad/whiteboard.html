@@ -180,21 +180,23 @@
 </body>
 <script src="whiteboard.js"></script>
 <script>
-  const sidebar = document.getElementById('sidebar');
-  const mainContent = document.getElementById('mainContent');
-  const toggleSidebar = document.getElementById('toggleSidebar');
-  let sidebarOpen = true;
-  toggleSidebar.addEventListener('click', () => {
-    sidebarOpen = !sidebarOpen;
-    if (sidebarOpen) {
-    sidebar.style.right = '0';
-    mainContent.style.marginRight = '220px';
-    toggleSidebar.innerHTML = '&#x25B6;'; // right arrow
-    } else {
-    sidebar.style.right = '-250px';
-    mainContent.style.marginRight = '10px';
-    toggleSidebar.innerHTML = '&#x25C0;'; // left arrow
-    }
-  });
+  window.onload = function() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const toggleSidebar = document.getElementById('toggleSidebar');
+    let sidebarOpen = true;
+    toggleSidebar.addEventListener('click', () => {
+      sidebarOpen = !sidebarOpen;
+      if (sidebarOpen) {
+      sidebar.style.right = '0';
+      mainContent.style.marginRight = '220px';
+      toggleSidebar.innerHTML = '&#x25B6;'; // right arrow
+      } else {
+      sidebar.style.right = '-250px';
+      mainContent.style.marginRight = '10px';
+      toggleSidebar.innerHTML = '&#x25C0;'; // left arrow
+      }
+    });
+  }
 </script>
 </html>
